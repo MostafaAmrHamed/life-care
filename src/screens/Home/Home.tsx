@@ -43,6 +43,38 @@ const home = () => {
                 <p className="pr-2 text-center">ذكر</p>
               </div>
             </Link>
+            <Link to="/Profile">
+              <div className="grid grid-cols-7 text-lg font-medium  text-slate-800 px-2 py-2 rounded-sm items-center hover:bg-gray-400 hover:text-white transition-all ease-in-out">
+                <p className="col-span-2 border-l-[1px] text-primary-1 hover:text-white">
+                  2
+                </p>
+                <p className="col-span-3 pr-2 border-l-[1px]">محمد على خالد</p>
+                <p className="pr-2 border-l-[1px] text-center">28</p>
+                <p className="pr-2 text-center">ذكر</p>
+              </div>
+            </Link>
+            <Link to="/Profile">
+              <div className="grid grid-cols-7 text-lg font-medium  text-slate-800 px-2 py-2 rounded-sm items-center hover:bg-gray-400 hover:text-white transition-all ease-in-out">
+                <p className="col-span-2 border-l-[1px] text-primary-1 hover:text-white">
+                  3
+                </p>
+                <p className="col-span-3 pr-2 border-l-[1px]">
+                  فاطمة حسين محمد
+                </p>
+                <p className="pr-2 border-l-[1px] text-center">18</p>
+                <p className="pr-2 text-center">انثى</p>
+              </div>
+            </Link>
+            <Link to="/Profile">
+              <div className="grid grid-cols-7 text-lg font-medium  text-slate-800 px-2 py-2 rounded-sm items-center hover:bg-gray-400 hover:text-white transition-all ease-in-out">
+                <p className="col-span-2 border-l-[1px] text-primary-1 hover:text-white">
+                  4
+                </p>
+                <p className="col-span-3 pr-2 border-l-[1px]">خالد محمد سليم</p>
+                <p className="pr-2 border-l-[1px] text-center">45</p>
+                <p className="pr-2 text-center">ذكر</p>
+              </div>
+            </Link>
           </div>
         </div>
       </div>
