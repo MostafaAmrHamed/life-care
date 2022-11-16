@@ -1,9 +1,24 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { db } from "../../firebase-config";
+import { collection, getDocs, addDoc } from "firebase/firestore";
+
 const Add = () => {
   const [name, setName] = useState<string>("");
   const [age, setAge] = useState<string>("");
   const [gender, setGender] = useState<string>("");
+  const patientCollectionRef = collection(db, "patient");
+
+  const addPatient = async () => {
+    const data = await getDocs(patientCollectionRef);
+    const newID = data.docs.length + 1;
+    await addDoc(patientCollectionRef, {
+      id: newID,
+      name: name,
+      age: age,
+      gender: gender,
+    });
+  };
   const register = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(`name: ${name} > age: ${age} > gender: ${gender}`);
@@ -68,6 +83,7 @@ const Add = () => {
               <button
                 type="submit"
                 className="bg-primary-1 text-white text-xl font-bold w-[140px] py-1 rounded-md ml-5 hover:scale-105 transition-all ease-in-out"
+                onClick={addPatient}
               >
                 تـسجــيل
               </button>

@@ -1,6 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-const home = () => {
+import { db } from "../../firebase-config";
+import { collection, getDocs } from "firebase/firestore";
+
+// type PatientData = {
+//   id: string;
+//   name: string;
+//   age: string;
+//   gender: string;
+// }[];
+const Home = () => {
+  const [patients, setPatients] = useState<any>([]);
+  const patientCollectionRef = collection(db, "patient");
+  useEffect(() => {
+    const getPatients = async () => {
+      const data = await getDocs(patientCollectionRef);
+      setPatients(
+        data.docs.map((doc) => ({ ...doc.data(), patientId: doc.id }))
+      );
+    };
+    getPatients();
+  }, []);
+
   return (
     <div className="mt-5">
       {/* Search */}
@@ -31,50 +52,26 @@ const home = () => {
           </div>
           {/* Paitients */}
           <div className="mt-5">
-            <Link to="/Profile">
-              <div className="grid grid-cols-7 text-lg font-medium  text-slate-800 px-2 py-2 rounded-sm items-center hover:bg-gray-400 hover:text-white transition-all ease-in-out">
-                <p className="col-span-2 border-l-[1px] text-primary-1 hover:text-white">
-                  1
-                </p>
-                <p className="col-span-3 pr-2 border-l-[1px]">
-                  مصطفى عمرو حامد
-                </p>
-                <p className="pr-2 border-l-[1px] text-center">23</p>
-                <p className="pr-2 text-center">ذكر</p>
-              </div>
-            </Link>
-            <Link to="/Profile">
-              <div className="grid grid-cols-7 text-lg font-medium  text-slate-800 px-2 py-2 rounded-sm items-center hover:bg-gray-400 hover:text-white transition-all ease-in-out">
-                <p className="col-span-2 border-l-[1px] text-primary-1 hover:text-white">
-                  2
-                </p>
-                <p className="col-span-3 pr-2 border-l-[1px]">محمد على خالد</p>
-                <p className="pr-2 border-l-[1px] text-center">28</p>
-                <p className="pr-2 text-center">ذكر</p>
-              </div>
-            </Link>
-            <Link to="/Profile">
-              <div className="grid grid-cols-7 text-lg font-medium  text-slate-800 px-2 py-2 rounded-sm items-center hover:bg-gray-400 hover:text-white transition-all ease-in-out">
-                <p className="col-span-2 border-l-[1px] text-primary-1 hover:text-white">
-                  3
-                </p>
-                <p className="col-span-3 pr-2 border-l-[1px]">
-                  فاطمة حسين محمد
-                </p>
-                <p className="pr-2 border-l-[1px] text-center">18</p>
-                <p className="pr-2 text-center">انثى</p>
-              </div>
-            </Link>
-            <Link to="/Profile">
-              <div className="grid grid-cols-7 text-lg font-medium  text-slate-800 px-2 py-2 rounded-sm items-center hover:bg-gray-400 hover:text-white transition-all ease-in-out">
-                <p className="col-span-2 border-l-[1px] text-primary-1 hover:text-white">
-                  4
-                </p>
-                <p className="col-span-3 pr-2 border-l-[1px]">خالد محمد سليم</p>
-                <p className="pr-2 border-l-[1px] text-center">45</p>
-                <p className="pr-2 text-center">ذكر</p>
-              </div>
-            </Link>
+            {patients
+              .map((patient: any) => {
+                return (
+                  <Link to="/Profile" key={patient.id}>
+                    <div className="grid grid-cols-7 text-lg font-medium  text-slate-800 px-2 py-2 rounded-sm items-center hover:bg-gray-400 hover:text-white transition-all ease-in-out">
+                      <p className="col-span-2 border-l-[1px] text-primary-1 hover:text-white">
+                        {patient.id}
+                      </p>
+                      <p className="col-span-3 pr-2 border-l-[1px]">
+                        {patient.name}
+                      </p>
+                      <p className="pr-2 border-l-[1px] text-center">
+                        {patient.age}
+                      </p>
+                      <p className="pr-2 text-center">{patient.gender}</p>
+                    </div>
+                  </Link>
+                );
+              })
+              .reverse()}
           </div>
         </div>
       </div>
@@ -82,4 +79,4 @@ const home = () => {
   );
 };
 
-export default home;
+export default Home;
