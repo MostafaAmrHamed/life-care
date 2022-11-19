@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { db } from "../../firebase-config";
 import { collection, getDocs, setDoc, doc } from "firebase/firestore";
+import Swal from "sweetalert2";
 
 const Add = () => {
   const [name, setName] = useState<string>("");
@@ -26,11 +27,19 @@ const Add = () => {
       age: age,
       gender: gender,
     });
-    navigate(0);
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "تم تسجيل المريض بنجاح",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    setTimeout(() => {
+      navigate(0);
+    }, 1000);
   };
   const register = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(`name: ${name} > age: ${age} > gender: ${gender}`);
     setName("");
     setAge("");
     setGender("");

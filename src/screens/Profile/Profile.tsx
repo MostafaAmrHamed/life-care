@@ -5,6 +5,8 @@ import { db } from "../../firebase-config";
 import Ticket from "./components/Ticket";
 import Update from "./components/Update";
 import pfImage from "./profile-2.png";
+import wmImage from "./woman.png";
+import Swal from "sweetalert2";
 const Profile = () => {
   const [update, setUpdate] = useState<boolean>(false);
   const [ticket, setTicket] = useState<boolean>(false);
@@ -12,10 +14,27 @@ const Profile = () => {
   let navigate = useNavigate();
   const [patient, setPatient] = useState<any>([]);
 
-  const deletePatient = async (id: any) => {
-    const patientDoc = doc(db, "patient", id);
-    await deleteDoc(patientDoc);
-    navigate(0);
+  const deletePatient = (id: any) => {
+    Swal.fire({
+      title: "هل انت متاكد؟",
+      text: "تريم مسح هذا المريض من العيادة!",
+      icon: "warning",
+      showCancelButton: true,
+      cancelButtonText: "لا",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "نعم",
+    }).then((result) => {
+      const x = async () => {
+        const patientDoc = doc(db, "patient", id);
+        await deleteDoc(patientDoc);
+      };
+      if (result.isConfirmed) {
+        x();
+        Swal.fire("تم المسح!", "هذا المريض تم مسحه من العياده.", "success");
+        navigate("/");
+      }
+    });
   };
   useEffect(() => {
     const getPatients = async () => {
@@ -51,7 +70,11 @@ const Profile = () => {
             <p>{patient.id}</p>
           </div>
         </div>
-        <img src={pfImage} alt="Profile pic" className="h-[200px] w-[200px]" />
+        <img
+          src={patient.gender === "ذكر" ? pfImage : wmImage}
+          alt="Profile pic"
+          className="h-[200px] w-[200px]"
+        />
       </div>
       <div className="flex justify-center mt-5 gap-5">
         <p

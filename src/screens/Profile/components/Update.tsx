@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { updateDoc, doc } from "firebase/firestore";
 import { db } from "../../../firebase-config";
 import { useParams, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 type data = {
   patientName: string;
   patientAge: string;
@@ -17,7 +18,16 @@ const Update: React.FC<data> = ({ patientName, patientAge, patientGender }) => {
   const updatePatient = async (id: any) => {
     const patientDoc = doc(db, "patient", id);
     await updateDoc(patientDoc, { name: name, age: age, gender: gender });
-    navigate(0);
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "تم تعديل بيانات المريض بنجاح",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    setTimeout(() => {
+      navigate(0);
+    }, 1000);
   };
   return (
     <div className="mx-auto mt-5 flex flex-col justify-center items-center">
