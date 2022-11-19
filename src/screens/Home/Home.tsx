@@ -12,6 +12,7 @@ import { collection, getDocs } from "firebase/firestore";
 const Home = () => {
   const [patients, setPatients] = useState<any>([]);
   const patientCollectionRef = collection(db, "patient");
+
   useEffect(() => {
     const getPatients = async () => {
       const data = await getDocs(patientCollectionRef);

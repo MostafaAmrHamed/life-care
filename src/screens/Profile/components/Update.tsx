@@ -1,22 +1,28 @@
 import React, { useState } from "react";
+import { updateDoc, doc } from "firebase/firestore";
+import { db } from "../../../firebase-config";
+import { useParams, useNavigate } from "react-router-dom";
+type data = {
+  patientName: string;
+  patientAge: string;
+  patientGender: string;
+};
+const Update: React.FC<data> = ({ patientName, patientAge, patientGender }) => {
+  let { patientID } = useParams();
+  let navigate = useNavigate();
+  const [name, setName] = useState<string>(patientName);
+  const [age, setAge] = useState<string>(patientAge);
+  const [gender, setGender] = useState<string>(patientGender);
 
-const Update = () => {
-  const [name, setName] = useState<string>("مصطفى عمرو حامد");
-  const [age, setAge] = useState<string>("23");
-  const [gender, setGender] = useState<string>("ذكر");
-  const register = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(`name: ${name} > age: ${age} > gender: ${gender}`);
+  const updatePatient = async (id: any) => {
+    const patientDoc = doc(db, "patient", id);
+    await updateDoc(patientDoc, { name: name, age: age, gender: gender });
+    navigate(0);
   };
   return (
     <div className="mx-auto mt-5 flex flex-col justify-center items-center">
       <div className="mt-10">
-        <form
-          className="space-y-10"
-          onSubmit={(e) => {
-            register(e);
-          }}
-        >
+        <form className="space-y-10">
           <input
             type="text"
             value={name}
@@ -56,8 +62,11 @@ const Update = () => {
           </select>
           <div>
             <button
-              type="submit"
+              type="button"
               className="bg-primary-2 text-white text-xl font-bold w-full py-1 rounded-md ml-5 hover:scale-105 transition-all ease-in-out"
+              onClick={() => {
+                updatePatient(patientID);
+              }}
             >
               حــفـظ
             </button>

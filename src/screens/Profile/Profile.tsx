@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getDoc, doc } from "firebase/firestore";
+import { getDoc, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import Ticket from "./components/Ticket";
 import Update from "./components/Update";
@@ -12,6 +12,11 @@ const Profile = () => {
   let navigate = useNavigate();
   const [patient, setPatient] = useState<any>([]);
 
+  const deletePatient = async (id: any) => {
+    const patientDoc = doc(db, "patient", id);
+    await deleteDoc(patientDoc);
+    navigate(0);
+  };
   useEffect(() => {
     const getPatients = async () => {
       const patientCollectionRef = doc(db, "patient", `${patientID}`);
@@ -26,24 +31,25 @@ const Profile = () => {
   }, []);
   return (
     <div className="mt-5">
-      <div className="flex justify-center items-center gap-20">
+      <div className="flex justify-center items-center">
         <div className="text-center text-xl space-y-2">
-          <p>
-            <span className="font-bold">الاســم: </span>
-            {patient.name}
-          </p>
-          <p>
-            <span className="font-bold">رقــم الـمـريـض: </span>
-            {patient.id}
-          </p>
-          <p>
-            <span className="font-bold">النـوع: </span>
-            {patient.gender}
-          </p>
-          <p>
-            <span className="font-bold">الـسن: </span>
-            {patient.age}
-          </p>
+          <div className="grid grid-cols-3">
+            <p className="font-bold text-primary-1">الاســم</p>
+            <p>{patient.name}</p>
+          </div>
+          <div className="grid grid-cols-3">
+            <p className="font-bold text-primary-1">السن</p>
+            <p>{patient.age}</p>
+          </div>
+
+          <div className="grid grid-cols-3">
+            <p className="font-bold text-primary-1">النـوع</p>
+            <p>{patient.gender}</p>
+          </div>
+          <div className="grid grid-cols-3">
+            <p className="font-bold text-primary-1">رقــم الـمـريـض</p>
+            <p>{patient.id}</p>
+          </div>
         </div>
         <img src={pfImage} alt="Profile pic" className="h-[200px] w-[200px]" />
       </div>
@@ -66,11 +72,22 @@ const Profile = () => {
         >
           تعديل
         </p>
-        <p className="bg-primary-3 text-white text-xl text-center font-medium w-[140px] py-1 rounded-md cursor-pointer hover:scale-105 transition-all ease-in-out">
+        <p
+          className="bg-primary-3 text-white text-xl text-center font-medium w-[140px] py-1 rounded-md cursor-pointer hover:scale-105 transition-all ease-in-out"
+          onClick={() => {
+            deletePatient(patientID);
+          }}
+        >
           مسح
         </p>
       </div>
-      {update && <Update />}
+      {update && (
+        <Update
+          patientName={patient.name}
+          patientAge={patient.age}
+          patientGender={patient.gender}
+        />
+      )}
       {ticket && <Ticket />}
     </div>
   );
