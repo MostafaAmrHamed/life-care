@@ -52,26 +52,24 @@ const Home = () => {
           </div>
           {/* Paitients */}
           <div className="mt-5">
-            {patients
-              .map((patient: any) => {
-                return (
-                  <Link to="/Profile" key={patient.id}>
-                    <div className="grid grid-cols-7 text-lg font-medium  text-slate-800 px-2 py-2 rounded-sm items-center hover:bg-gray-400 hover:text-white transition-all ease-in-out">
-                      <p className="col-span-2 border-l-[1px] text-primary-1 hover:text-white">
-                        {patient.id}
-                      </p>
-                      <p className="col-span-3 pr-2 border-l-[1px]">
-                        {patient.name}
-                      </p>
-                      <p className="pr-2 border-l-[1px] text-center">
-                        {patient.age}
-                      </p>
-                      <p className="pr-2 text-center">{patient.gender}</p>
-                    </div>
-                  </Link>
-                );
-              })
-              .reverse()}
+            {patients.map((patient: any) => {
+              return (
+                <Link to={`/profile/${patient.patientId}`} key={patient.id}>
+                  <div className="grid grid-cols-7 text-lg font-medium  text-slate-800 px-2 py-2 rounded-sm items-center hover:bg-gray-400 hover:text-white transition-all ease-in-out">
+                    <p className="col-span-2 border-l-[1px] text-primary-1 hover:text-white">
+                      {patient.id}
+                    </p>
+                    <p className="col-span-3 pr-2 border-l-[1px]">
+                      {patient.name}
+                    </p>
+                    <p className="pr-2 border-l-[1px] text-center">
+                      {patient.age}
+                    </p>
+                    <p className="pr-2 text-center">{patient.gender}</p>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>

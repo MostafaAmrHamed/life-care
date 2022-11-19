@@ -10,8 +10,8 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/Profile" element={<Profile />} />
-        <Route path="/Add" element={<Add />} />
+        <Route path="/profile/:patientID" element={<Profile />} />
+        <Route path="/add" element={<Add />} />
       </Routes>
     </div>
   );

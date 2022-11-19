@@ -1,28 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { getDoc, doc } from "firebase/firestore";
+import { db } from "../../firebase-config";
 import Ticket from "./components/Ticket";
 import Update from "./components/Update";
 import pfImage from "./profile-2.png";
 const Profile = () => {
   const [update, setUpdate] = useState<boolean>(false);
   const [ticket, setTicket] = useState<boolean>(false);
+  let { patientID } = useParams();
+  let navigate = useNavigate();
+  const [patient, setPatient] = useState<any>([]);
+
+  useEffect(() => {
+    const getPatients = async () => {
+      const patientCollectionRef = doc(db, "patient", `${patientID}`);
+      const docSnap: any = await getDoc(patientCollectionRef);
+      if (docSnap.exists()) {
+        setPatient({ ...docSnap.data() });
+      } else {
+        navigate("/");
+      }
+    };
+    getPatients();
+  }, []);
   return (
     <div className="mt-5">
       <div className="flex justify-center items-center gap-20">
         <div className="text-center text-xl space-y-2">
           <p>
             <span className="font-bold">الاســم: </span>
-            مصطفى عمرو حامد
+            {patient.name}
           </p>
           <p>
-            <span className="font-bold">رقــم الـمـريـض: </span>1
+            <span className="font-bold">رقــم الـمـريـض: </span>
+            {patient.id}
           </p>
           <p>
             <span className="font-bold">النـوع: </span>
-            ذكر
+            {patient.gender}
           </p>
           <p>
             <span className="font-bold">الـسن: </span>
-            23
+            {patient.age}
           </p>
         </div>
         <img src={pfImage} alt="Profile pic" className="h-[200px] w-[200px]" />
